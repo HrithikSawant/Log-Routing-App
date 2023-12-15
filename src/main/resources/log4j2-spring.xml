@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="syslog.host">${bundle:application:syslog.host}</Property>
+        <Property name="syslog.port">${bundle:application:syslog.port}</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}}{bright,blue} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg %n"/>
+        </Console>
+        <Syslog name="Syslog" format="RFC5424" host="${syslog.host}" port="${syslog.port}"
+                protocol="TCP" appName="LogRouter" facility="LOCAL0" newLine="true"/>
+
+    </Appenders>
+
+    <Loggers>
+        <!-- Create a specific Logger for logs you want to send to Syslog -->
+        <Logger name="com.hrithik.logrouter.service.LogService" level="info">
+            <AppenderRef ref="Syslog"/>
+        </Logger>
+
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
